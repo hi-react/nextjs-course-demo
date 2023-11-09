@@ -41,8 +41,12 @@ export async function getStaticPaths() {
 
   return {
     // 특정 meetupId 값에 대한 페이지만 사전 생성하도록 설정할 수 있게 함 (방문이 잦은 페이지에만 적용하는 것이 좋고, 나머지는 요청이 입력되었을 때 동적으로 사전 생성)
-    // fallback: false -> 지원되는 모든 paths를 정의했다고 설정
-    fallback: false,
+
+    // fallback: false -> 지원되는 모든 paths를 정의했다고 설정 (build 타임에만 설정, 그 이후 설정 X) -> 사전 생성되지 않은 데이터에 대한 요청이 들어오면 404 에러 발생
+    // fallback: true / blocking -> 지정된 경로 목록이 완전하지 않을 수 있음을 nextJS에 알리는 것 -> 사전 생성되지 않은 데이터에 대한 요청이 들어오는 즉시 페이지를 사전 생성 후 캐싱해둔다.
+    // fallback: true -> 즉시 빈 페이지를 반환, 콘텐츠가 동적으로 생성되고 나면 띄움. 따라서 페이지에 데이터가 아직 없을 경우를 처리해야 함 (404 에러 발생 X)
+    // fallback: blocking -> 페이지가 완전히 준비되어 사전 생성될 때까지 아무 것도 볼 수 없음
+    fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: {
         meetupId: meetup._id.toString(),

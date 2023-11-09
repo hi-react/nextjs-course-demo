@@ -58,7 +58,7 @@ export async function getStaticProps() {
       })),
     },
     // 데이터 업데이트 주기에 따라 설정 -> 배포 후에도 페이지가 주기에 따라 업데이트 되도록
-    revalidate: 1800, // 30분 마다 재생성
+    revalidate: 10, // 10초 마다 재생성
   };
 }
 
